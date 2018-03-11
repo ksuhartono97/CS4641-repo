@@ -2,6 +2,7 @@ package com.company;
 
 
 import java.util.Arrays;
+import java.util.stream.DoubleStream;
 
 import dist.DiscreteDependencyTree;
 import dist.DiscreteUniformDistribution;
@@ -27,15 +28,13 @@ import opt.prob.MIMIC;
 import opt.prob.ProbabilisticOptimizationProblem;
 import shared.FixedIterationTrainer;
 
-/**
- * Copied from ContinuousPeaksTest
- * @version 1.0
- */
 public class FourPeaks {
     /** The n value */
-    private static final int N = 200;
+    private static final int N = 100;
     /** The t value */
-    private static final int T = N / 5;
+    private static final int T = N / 10;
+
+    private static int numberOfLoops = 20;
 
     public static void main(String[] args) {
         int[] ranges = new int[N];
@@ -50,24 +49,48 @@ public class FourPeaks {
         GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
 
-        RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
-        FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 200000);
-        fit.train();
-        System.out.println("RHC: " + ef.value(rhc.getOptimal()));
+        double[] scoreArray = new double[numberOfLoops];
 
-        SimulatedAnnealing sa = new SimulatedAnnealing(1E11, .95, hcp);
-        fit = new FixedIterationTrainer(sa, 200000);
-        fit.train();
-        System.out.println("SA: " + ef.value(sa.getOptimal()));
+        FixedIterationTrainer fit;
 
-        StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 100, 10, gap);
-        fit = new FixedIterationTrainer(ga, 1000);
-        fit.train();
-        System.out.println("GA: " + ef.value(ga.getOptimal()));
+        for (int i = 0; i < numberOfLoops; i++) {
+            RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
+            fit = new FixedIterationTrainer(rhc, 200000);
+            fit.train();
+            scoreArray[i] = ef.value(rhc.getOptimal());
+        }
 
-        MIMIC mimic = new MIMIC(200, 20, pop);
-        fit = new FixedIterationTrainer(mimic, 1000);
-        fit.train();
-        System.out.println("MIMIC: " + ef.value(mimic.getOptimal()));
+        System.out.println("RHC: " + DoubleStream.of(scoreArray).sum() / scoreArray.length);
+
+
+        scoreArray = new double[numberOfLoops];
+        for (int i = 0; i < numberOfLoops; i++) {
+            SimulatedAnnealing sa = new SimulatedAnnealing(1E11, .95, hcp);
+            fit = new FixedIterationTrainer(sa, 200000);
+            fit.train();
+            scoreArray[i] = ef.value(sa.getOptimal());
+        }
+
+        System.out.println("SA: " + DoubleStream.of(scoreArray).sum() / scoreArray.length);
+
+        scoreArray = new double[numberOfLoops];
+        for (int i = 0; i < numberOfLoops; i++) {
+            StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 100, 10, gap);
+            fit = new FixedIterationTrainer(ga, 1000);
+            fit.train();
+            scoreArray[i] = ef.value(ga.getOptimal());
+        }
+
+        System.out.println("GA: " + DoubleStream.of(scoreArray).sum() / scoreArray.length);
+
+
+        scoreArray = new double[numberOfLoops];
+        for (int i = 0; i < numberOfLoops; i++) {
+            MIMIC mimic = new MIMIC(200, 20, pop);
+            fit = new FixedIterationTrainer(mimic, 1000);
+            fit.train();
+            scoreArray[i] = ef.value(mimic.getOptimal());
+        }
+        System.out.println("MIMIC: " + DoubleStream.of(scoreArray).sum() / scoreArray.length);
     }
 }
