@@ -18,7 +18,7 @@ import java.io.FileReader;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class Poker2 {
+public class Poker {
 
     private static final String FILENAME = "data/train.csv";
     private static int num_examples = 25010;
@@ -94,7 +94,7 @@ public class Poker2 {
      * NOTE: min(populationRations) >= max(mateRatios) + max(toMutateRatio)
      * This condition must be upheld or Exceptions will be thrown later in the script
      */
-    private static final boolean shouldFindGAParams = true;
+    private static final boolean shouldFindGAParams = false;
 //    private static double[] populationRatios = {0.15, 0.20, 0.25, 0.30};
     private static double[] populationRatios = {0.10, 0.15, 0.20, 0.25};
     private static double[] mateRatios = {0.02};
@@ -146,7 +146,7 @@ public class Poker2 {
         /* Actual Train Test Code */
 
 
-        /*
+
         int trainIterations;
         makeTestTrainSets();
 
@@ -158,32 +158,32 @@ public class Poker2 {
             System.out.println("Current sample size: " + trainSet.size());
             System.out.println("===========");
 
-            //Back Propagation
-            trainIterations = 2000;
-            runBackprop(trainIterations);
-
-            //RHC
-            trainIterations = 1200;
-            runRHC(trainIterations);
-
-            //SA
-            trainIterations = 4000;
-            runSA(trainIterations, best_temp, best_cooling);
+//            //Back Propagation
+//            trainIterations = 2000;
+//            runBackprop(trainIterations);
+//
+//            //RHC
+//            trainIterations = 1200;
+//            runRHC(trainIterations);
+//
+//            //SA
+//            trainIterations = 4000;
+//            runSA(trainIterations, best_temp, best_cooling);
 
             //GA
-            trainIterations = 10;
+            trainIterations = 30;
             runGA(trainIterations);
         }
 
-        */
+
 
 
         /* Param Tuning Code */
 
-        makeTestTrainSets();
-        folds = kfolds(trainSet);
+//        makeTestTrainSets();
+//        folds = kfolds(trainSet);
 
-        int trainIterations;
+//        int trainIterations;
 
 
 //    Determine best NN params, which happen to just be the number of hidden layer nodes.
@@ -226,11 +226,11 @@ public class Poker2 {
 
 //
     /* GA */
-        if (shouldFindGAParams) {
+//        if (shouldFindGAParams) {
 //      TODO: Keep this very small
-            trainIterations = 10;
-            determineGAParams(trainIterations);
-        }
+//            trainIterations = 10;
+//            determineGAParams(trainIterations);
+//        }
 //
 
     }
