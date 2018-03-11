@@ -95,12 +95,13 @@ public class Poker2 {
      * This condition must be upheld or Exceptions will be thrown later in the script
      */
     private static final boolean shouldFindGAParams = true;
-    private static double[] populationRatios = {0.15, 0.20, 0.25, 0.30};
-    private static double[] mateRatios = {0.02, 0.04, 0.06};
-    private static double[] mutateRatios = {0.02, 0.04, 0.06};
+//    private static double[] populationRatios = {0.15, 0.20, 0.25, 0.30};
+    private static double[] populationRatios = {0.10, 0.15, 0.20, 0.25};
+    private static double[] mateRatios = {0.02};
+    private static double[] mutateRatios = {0.02};
 
     //  TODO: Place values here from previous run if you set shouldFindGAParams to false
-    private static double populationRatio = 0.25;
+    private static double populationRatio = 0.15;
     private static double toMateRatio = 0.02;
     private static double toMutateRatio = 0.02;
 
@@ -145,6 +146,7 @@ public class Poker2 {
         /* Actual Train Test Code */
 
 
+        /*
         int trainIterations;
         makeTestTrainSets();
 
@@ -157,27 +159,31 @@ public class Poker2 {
             System.out.println("===========");
 
             //Back Propagation
-//            trainIterations = 2000;
-//            runBackprop(trainIterations);
+            trainIterations = 2000;
+            runBackprop(trainIterations);
 
             //RHC
-//            trainIterations = 1200;
-//            runRHC(trainIterations);
+            trainIterations = 1200;
+            runRHC(trainIterations);
 
             //SA
-//            trainIterations = 4000;
-//            runSA(trainIterations, best_temp, best_cooling);
+            trainIterations = 4000;
+            runSA(trainIterations, best_temp, best_cooling);
 
             //GA
             trainIterations = 10;
             runGA(trainIterations);
         }
 
+        */
+
 
         /* Param Tuning Code */
 
         makeTestTrainSets();
         folds = kfolds(trainSet);
+
+        int trainIterations;
 
 
 //    Determine best NN params, which happen to just be the number of hidden layer nodes.
@@ -221,10 +227,9 @@ public class Poker2 {
 //
     /* GA */
         if (shouldFindGAParams) {
-////      TODO: Keep this very small
+//      TODO: Keep this very small
             trainIterations = 10;
             determineGAParams(trainIterations);
-//
         }
 //
 
